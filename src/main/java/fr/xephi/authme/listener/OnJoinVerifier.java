@@ -167,8 +167,12 @@ class OnJoinVerifier implements Reloadable {
         if ((!isAuthAvailable || settings.getProperty(ProtectionSettings.ENABLE_PROTECTION_REGISTERED))
             && settings.getProperty(ProtectionSettings.ENABLE_PROTECTION)) {
             if (!validationService.isCountryAdmitted(playerIp)) {
+                ConsoleLogger.debug("Country check failed for IP '" + playerIp + "'");
                 throw new FailedVerificationException(MessageKey.COUNTRY_BANNED_ERROR);
             }
+            ConsoleLogger.debug("Successful country check for IP '" + playerIp + "'");
+        } else {
+            ConsoleLogger.debug("Country check is disabled, not checking IP '" + playerIp + "'");
         }
     }
 

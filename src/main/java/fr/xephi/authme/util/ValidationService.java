@@ -1,5 +1,6 @@
 package fr.xephi.authme.util;
 
+import fr.xephi.authme.ConsoleLogger;
 import fr.xephi.authme.datasource.DataSource;
 import fr.xephi.authme.initialization.Reloadable;
 import fr.xephi.authme.output.MessageKey;
@@ -109,10 +110,12 @@ public class ValidationService implements Reloadable {
         // Check if we have restrictions on country, if not return true and avoid the country lookup
         if (settings.getProperty(ProtectionSettings.COUNTRIES_WHITELIST).isEmpty()
             && settings.getProperty(ProtectionSettings.COUNTRIES_BLACKLIST).isEmpty()) {
+            ConsoleLogger.debug("Country whitelist & blacklist empty: skipping country check");
             return true;
         }
 
         String countryCode = geoLiteApi.getCountryCode(hostAddress);
+        ConsoleLogger.debug("Got country code '" + countryCode + "' for IP '" + hostAddress + "'");
         return validateWhitelistAndBlacklist(countryCode,
             ProtectionSettings.COUNTRIES_WHITELIST,
             ProtectionSettings.COUNTRIES_BLACKLIST);
